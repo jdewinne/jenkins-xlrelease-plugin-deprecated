@@ -1,0 +1,52 @@
+group = "com.xebialabs.xlrelase.jenkins.ci"
+version = "2.2.1-SNAPSHOT"
+description = "Trigger a build from XL Release"
+
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'java'
+
+
+repositories {
+  mavenCentral()
+  maven {
+    url "http://repo.jenkins-ci.org/public/"
+  }
+}
+
+
+
+configurations {
+  compile.transitive = true
+  providedRuntime.exclude group: 'jdom', module: 'jdom' //Engine packager requires JDOM2. Exclude from config so that it is included in the hpi Web-Inf lib.
+  providedRuntime.exclude group: 'de.schlichtherle.truezip', module: 'truezip-path' // needs Java7, borks on Java6 setups
+  all*.exclude group: 'com.thoughtworks.xstream', module: "xstream"
+  // this artifact lives in a netbeans repository which behaves flakey
+  // it's not used so exclude it.
+  testCompile.exclude group: 'org.netbeans.modules', module: "org-netbeans-insane"
+}
+
+def truezipVersion = "7.1.4" // this is the latest version not to bork on a Java6 Jenkins master/slave-setup
+// (Later versions reference NIO.2, resulting in a NoClassDefFoundError on java.nio.file.Path)
+
+configurations.all {
+  resolutionStrategy {
+    force "de.schlichtherle.truezip:truezip-driver-file:$truezipVersion"
+    force "de.schlichtherle.truezip:truezip-driver-zip:$truezipVersion"
+    force "de.schlichtherle.truezip:truezip-file:$truezipVersion"
+    force "de.schlichtherle.truezip:truezip-kernel:$truezipVersion"
+    force "de.schlichtherle.truezip:truezip-swing:$truezipVersion"
+  }
+}
+
+dependencies {
+  compile "org.jenkins-ci.main:cli:1.509.1"
+  compile "org.jenkins-ci.main:jenkins-core:1.509.1"
+  compile "org.slf4j:slf4j-api:1.7.5"
+
+  compile 'com.google.code.findbugs:jsr305:2.0.2'
+  compile 'findbugs:annotations:1.0.0'
+
+  testCompile "junit:junit:4.11"
+  testCompile "org.mockito:mockito-all:1.9.5"
+}
