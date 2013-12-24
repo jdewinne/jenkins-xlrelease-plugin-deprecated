@@ -1,5 +1,7 @@
 package com.xebialabs.xlrelease.jenkins;
 
+import java.util.Properties;
+
 /**
  * Created with IntelliJ IDEA.
  * User: jdewinne
@@ -17,7 +19,7 @@ public class TestBuildJob {
         String password = "jenkins";
         String jobName = "test xl release";
 
-        JenkinsBuildJob jenkinsBuildJob = new JenkinsBuildJob(url, keyFile, password,jobName);
+        JenkinsBuildJob jenkinsBuildJob = new JenkinsBuildJob(url, keyFile, password, jobName, new Properties());
 
         jenkinsBuildJob.runInJenkins();
     }
