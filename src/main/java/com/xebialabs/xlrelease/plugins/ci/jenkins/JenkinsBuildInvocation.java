@@ -13,7 +13,7 @@ import java.util.Properties;
 
 import hudson.cli.CLI;
 
-public class JenkinsBuildJob {
+public class JenkinsBuildInvocation {
 
     private String url;
     private String keyFile;
@@ -22,7 +22,7 @@ public class JenkinsBuildJob {
     private Properties parameters;
     private static final String BUILD_COMMAND = "build";
 
-    public JenkinsBuildJob(final String url, final String keyFile, final String password, final String jobName, final Properties parameters) {
+    public JenkinsBuildInvocation(final String url, final String keyFile, final String password, final String jobName, final Properties parameters) {
         this.url = url;
         this.keyFile = keyFile;
         this.password = password;
@@ -30,7 +30,7 @@ public class JenkinsBuildJob {
         this.parameters = parameters;
     }
 
-    public int runInJenkins() {
+    public int run() {
 
         try {
             CLI cli = new CLI(new URL(url));
