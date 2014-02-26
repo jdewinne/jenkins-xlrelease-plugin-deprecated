@@ -1,7 +1,7 @@
 import sys
 from java.util import Properties
 from java.io import StringReader
-from com.xebialabs.xlrelease.jenkins import JenkinsBuildJob
+from com.xebialabs.xlrelease.plugins.ci.jenkins import JenkinsBuildJob
 
 print "Going to build jenkins job %s \n" %jobName
 print "with parameters: %s. \n" %parameters
