@@ -1,7 +1,7 @@
 import sys
 from java.util import Properties
 from java.io import StringReader
-from com.xebialabs.xlrelease.plugins.ci.jenkins import JenkinsBuildInvocation
+from com.xebialabs.xlrelease.plugin.jenkins import JenkinsBuildInvocation
 
 print "About to run Jenkins build for job '%s'\n" % (jobName)
 

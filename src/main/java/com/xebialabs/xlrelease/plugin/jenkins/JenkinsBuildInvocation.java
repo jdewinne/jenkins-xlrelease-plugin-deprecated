@@ -1,4 +1,4 @@
-package com.xebialabs.xlrelease.plugins.ci.jenkins;
+package com.xebialabs.xlrelease.plugin.jenkins;
 
 
 import java.io.File;
