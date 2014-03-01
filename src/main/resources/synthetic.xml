@@ -4,7 +4,7 @@
     <type type="jenkins.RunBuild" extends="xlrelease.PythonScript">
         <property name="jenkinsUrl" category="input" label="Jenkins Server URL" />
         <property name="keyFile" category="input" label="Jenkins CLI Key File" />
-        <property name="password" password="true" category="input" />
+        <property name="password" password="true" category="input" required="false" label="Key File Password (optional)" />
         <property name="jobName" category="input" label="Job Name" />
         <property name="parameters" size="large" category="input" required="false" label="Job Parameters"
           description="Optional job parameters specified in Java Properties file format, one 'key=value' entry per line" />
