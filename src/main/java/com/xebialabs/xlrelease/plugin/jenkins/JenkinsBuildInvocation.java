@@ -43,7 +43,6 @@ public class JenkinsBuildInvocation {
                     }
                     cli.authenticate(key);
                 }
-                cli.upgrade();
                 return cli.execute(getArgs(), System.in, System.out, System.err);
             } catch (IOException | GeneralSecurityException e) {
                 System.err.println("Error invoking Jenkins build: " + e.getMessage());
