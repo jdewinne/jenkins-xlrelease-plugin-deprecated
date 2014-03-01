@@ -1,11 +1,10 @@
-group = "com.xebialabs.xlrelase.jenkins.ci"
+group = "com.xebialabs.xlrelease.plugins.ci.jenkins"
 version = "2.2.1-SNAPSHOT"
-description = "Trigger a build from XL Release"
+description = "Invoke Jenkins from XL Release"
 
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'java'
-
 
 repositories {
   mavenCentral()
@@ -14,28 +13,29 @@ repositories {
   }
 }
 
-
-
 configurations {
   compile.transitive = true
-  providedRuntime.exclude group: 'jdom', module: 'jdom' //Engine packager requires JDOM2. Exclude from config so that it is included in the hpi Web-Inf lib.
-  providedRuntime.exclude group: 'de.schlichtherle.truezip', module: 'truezip-path' // needs Java7, borks on Java6 setups
+  // Engine packager requires JDOM2. Exclude from config so that it is included in 
+  // the hpi Web-Inf lib.
+  providedRuntime.exclude group: 'jdom', module: 'jdom' 
+  // needs Java 7, borks on Java 6 setups
+  providedRuntime.exclude group: 'de.schlichtherle.truezip', module: 'truezip-path'
   all*.exclude group: 'com.thoughtworks.xstream', module: "xstream"
-  // this artifact lives in a netbeans repository which behaves flakey
-  // it's not used so exclude it.
+  // this unused artifact lives in a netbeans repository which is flakey, so exclude it.
   testCompile.exclude group: 'org.netbeans.modules', module: "org-netbeans-insane"
 }
 
-def truezipVersion = "7.1.4" // this is the latest version not to bork on a Java6 Jenkins master/slave-setup
-// (Later versions reference NIO.2, resulting in a NoClassDefFoundError on java.nio.file.Path)
+// This is the latest version not to bork on a Java 6 Jenkins master/slave-setup.
+// Later versions reference NIO.2, resulting in a NoClassDefFoundError on java.nio.file.Path
+def compatibleTruezipVersion = "7.1.4"
 
 configurations.all {
   resolutionStrategy {
-    force "de.schlichtherle.truezip:truezip-driver-file:$truezipVersion"
-    force "de.schlichtherle.truezip:truezip-driver-zip:$truezipVersion"
-    force "de.schlichtherle.truezip:truezip-file:$truezipVersion"
-    force "de.schlichtherle.truezip:truezip-kernel:$truezipVersion"
-    force "de.schlichtherle.truezip:truezip-swing:$truezipVersion"
+    force "de.schlichtherle.truezip:truezip-driver-file:$compatibleTruezipVersion"
+    force "de.schlichtherle.truezip:truezip-driver-zip:$compatibleTruezipVersion"
+    force "de.schlichtherle.truezip:truezip-file:$compatibleTruezipVersion"
+    force "de.schlichtherle.truezip:truezip-kernel:$compatibleTruezipVersion"
+    force "de.schlichtherle.truezip:truezip-swing:$compatibleTruezipVersion"
   }
 }
 
