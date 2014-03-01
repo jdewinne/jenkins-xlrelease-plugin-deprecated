@@ -33,21 +33,31 @@ public class JenkinsBuildInvocation {
     public int run() {
         try {
             CLI cli = new CLI(new URL(url));
-            if (keyFile != null) {
-                KeyPair key;
-                if (password != null) {
-                    key = CLI.loadKey(new File(keyFile), password);
-                } else {
-                    key = CLI.loadKey(new File(keyFile));
+            try {
+                if (keyFile != null) {
+                    KeyPair key;
+                    if (password != null) {
+                        key = CLI.loadKey(new File(keyFile), password);
+                    } else {
+                        key = CLI.loadKey(new File(keyFile));
+                    }
+                    cli.authenticate(key);
                 }
-                cli.authenticate(key);
+                cli.upgrade();
+                return cli.execute(getArgs(), System.in, System.out, System.err);
+            } catch (IOException | GeneralSecurityException e) {
+                System.err.println("Error invoking Jenkins build: " + e.getMessage());
+                e.printStackTrace();
+                return 1;
+            } finally {
+                try {
+                    cli.close();
+                } catch (IOException | InterruptedException ignored) {}
             }
-            cli.upgrade();
-            return cli.execute(getArgs(), System.in, System.out, System.err);
-        } catch (IOException | InterruptedException | GeneralSecurityException e) {
-            System.err.println("Error invoking Jenkins build: " + e.getMessage());
+        } catch (IOException | InterruptedException e) {
+            System.err.println("Error creating Jenkins CLI: " + e.getMessage());
             e.printStackTrace();
-            return 1;
+            return 2;
         }
     }
 
