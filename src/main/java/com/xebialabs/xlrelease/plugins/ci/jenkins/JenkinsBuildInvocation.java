@@ -34,7 +34,7 @@ public class JenkinsBuildInvocation {
         try {
             CLI cli = new CLI(new URL(url));
             KeyPair key = CLI.loadKey(new File(keyFile), password);
-            cli.authenticate(Collections.singleton(key));
+            cli.authenticate(key);
             cli.upgrade();
             return cli.execute(getArgs(), System.in, System.out, System.err);
         } catch (IOException | InterruptedException | GeneralSecurityException e) {
