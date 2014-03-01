@@ -33,13 +33,15 @@ public class JenkinsBuildInvocation {
     public int run() {
         try {
             CLI cli = new CLI(new URL(url));
-            KeyPair key;
-            if (password != null) {
-                key = CLI.loadKey(new File(keyFile), password);
-            } else {
-                key = CLI.loadKey(new File(keyFile));
+            if (keyFile != null) {
+                KeyPair key;
+                if (password != null) {
+                    key = CLI.loadKey(new File(keyFile), password);
+                } else {
+                    key = CLI.loadKey(new File(keyFile));
+                }
+                cli.authenticate(key);
             }
-            cli.authenticate(key);
             cli.upgrade();
             return cli.execute(getArgs(), System.in, System.out, System.err);
         } catch (IOException | InterruptedException | GeneralSecurityException e) {
